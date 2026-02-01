@@ -3,11 +3,15 @@
 #include <string>
 using namespace std;
 
+// Structure pour representer un article
 struct Article {
-    string code;
-    string nom;
-    double prix;
+	string code; // Code unique de l'article
+	string nom; // Nom de l'article
+	double prix;  // Prix de l'article
 };
+
+// Fonction pour valider l'employe
+// met le nom de l'employe dans la variable nom 
 
 bool estEmployeValide(const string& code, string& nom) {
     if (code == "001") nom = "Andrew";
@@ -16,8 +20,11 @@ bool estEmployeValide(const string& code, string& nom) {
     else if (code == "004") nom = "Jean-Gabriel";
     else if (code == "005") nom = "Caroline";
     else return false;
-    return true;
+	return true; // retourne vrai si l'employe est valide
+
 }
+
+// Fonction pour creer le catalogue d'articles
 
 vector<Article> creerCatalogue() {
     return {
@@ -32,6 +39,8 @@ vector<Article> creerCatalogue() {
     };
 }
 
+// afficher le catalogue d'articles
+// chaque article sur une ligne avec son code, nom et prix
 void afficherCatalogue(const vector<Article>& catalogue) {
     for (const Article& a : catalogue) {
         cout << a.code << ": " << a.nom << " - " << a.prix << "$" << endl;
@@ -49,6 +58,7 @@ void ajouterArticle(vector<Article>& panier, const vector<Article>& catalogue) {
     cout << "Votre choix: ";
     cin >> choix;
 
+	// Rechercher l'article dans le catalogue
     for (const Article& a : catalogue) {
         if (a.code == choix) {
             panier.push_back(a);
@@ -60,11 +70,13 @@ void ajouterArticle(vector<Article>& panier, const vector<Article>& catalogue) {
     cout << "Choix invalide..." << endl;
 }
 
+// afficher le contenu du panier
 void afficherPanier(const vector<Article>& panier) {
     cout << "********************" << endl;
     cout << " AFFICHER PANIER" << endl;
     cout << "********************" << endl;
 
+	// Verifier si le panier est vide
     if (panier.empty()) {
         cout << "Le panier est vide." << endl;
         return;
@@ -74,7 +86,8 @@ void afficherPanier(const vector<Article>& panier) {
         cout << a.code << ": " << a.nom << " - " << a.prix << "$" << endl;
     }
 }
-
+// supprimer un article du panier
+// 
 void supprimerArticle(vector<Article>& panier) {
     cout << "********************" << endl;
     cout << " RETIRER ARTICLE" << endl;
@@ -85,6 +98,7 @@ void supprimerArticle(vector<Article>& panier) {
         return;
     }
 
+	// Afficher le contenu du panier
     for (const Article& a : panier) {
         cout << a.code << ": " << a.nom << " - " << a.prix << "$" << endl;
     }
@@ -93,6 +107,9 @@ void supprimerArticle(vector<Article>& panier) {
     cout << "Votre choix: ";
     cin >> choix;
 
+
+	// Rechercher l'article dans le panier 
+	// et le supprimer s'il est trouve
     for (int i = 0; i < panier.size(); i++) {
         if (panier[i].code == choix) {
             panier.erase(panier.begin() + i);
@@ -103,6 +120,8 @@ void supprimerArticle(vector<Article>& panier) {
 
     cout << "Choix invalide..." << endl;
 }
+
+// Fonction pour afficher le menu principal
 
 void menu(vector<Article>& panier, const vector<Article>& catalogue) {
     int choix;
@@ -117,6 +136,7 @@ void menu(vector<Article>& panier, const vector<Article>& catalogue) {
         cout << "Votre choix: ";
         cin >> choix;
 
+		// Traiter le choix de l'utilisateur avec un switch
         switch (choix) {
         case 1:
             ajouterArticle(panier, catalogue);
@@ -140,6 +160,8 @@ void menu(vector<Article>& panier, const vector<Article>& catalogue) {
 int main() {
     string codeEmploye, nomEmploye;
 
+
+	// Boucle jusqu'a ce qu'un employe valide soit entre
     do {
         cout << "Veuillez vous identifier: ";
         cin >> codeEmploye;
@@ -150,10 +172,12 @@ int main() {
 
     cout << "Bonjour, " << nomEmploye << endl;
 
+	// Creer le catalogue et le panier avec des vecteurs
     vector<Article> catalogue = creerCatalogue();
     vector<Article> panier;
-
+    
     menu(panier, catalogue);
 
+   
     return 0;
 }
