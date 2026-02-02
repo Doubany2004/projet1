@@ -1,13 +1,18 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
+
 using namespace std;
 
 // Structure pour representer un article
 struct Article {
-	string code; // Code unique de l'article
-	string nom; // Nom de l'article
-	double prix;  // Prix de l'article
+    string code; // Code unique de l'article
+    string nom; // Nom de l'article
+    double prix;  // Prix de l'article
 };
 
 // Fonction pour valider l'employe
@@ -20,7 +25,7 @@ bool estEmployeValide(const string& code, string& nom) {
     else if (code == "004") nom = "Jean-Gabriel";
     else if (code == "005") nom = "Caroline";
     else return false;
-	return true; // retourne vrai si l'employe est valide
+    return true; // retourne vrai si l'employe est valide
 
 }
 
@@ -58,7 +63,7 @@ void ajouterArticle(vector<Article>& panier, const vector<Article>& catalogue) {
     cout << "Votre choix: ";
     cin >> choix;
 
-	// Rechercher l'article dans le catalogue
+    // Rechercher l'article dans le catalogue
     for (const Article& a : catalogue) {
         if (a.code == choix) {
             panier.push_back(a);
@@ -76,7 +81,7 @@ void afficherPanier(const vector<Article>& panier) {
     cout << " AFFICHER PANIER" << endl;
     cout << "********************" << endl;
 
-	// Verifier si le panier est vide
+    // Verifier si le panier est vide
     if (panier.empty()) {
         cout << "Le panier est vide." << endl;
         return;
@@ -98,7 +103,7 @@ void supprimerArticle(vector<Article>& panier) {
         return;
     }
 
-	// Afficher le contenu du panier
+    // Afficher le contenu du panier
     for (const Article& a : panier) {
         cout << a.code << ": " << a.nom << " - " << a.prix << "$" << endl;
     }
@@ -108,8 +113,8 @@ void supprimerArticle(vector<Article>& panier) {
     cin >> choix;
 
 
-	// Rechercher l'article dans le panier 
-	// et le supprimer s'il est trouve
+    // Rechercher l'article dans le panier 
+    // et le supprimer s'il est trouve
     for (int i = 0; i < panier.size(); i++) {
         if (panier[i].code == choix) {
             panier.erase(panier.begin() + i);
@@ -121,9 +126,66 @@ void supprimerArticle(vector<Article>& panier) {
     cout << "Choix invalide..." << endl;
 }
 
+
+//fonction pour afficher la facture
+
+void facture(vector<Article>& panier, string employe) {
+
+    srand(time(0));
+    time_t tempsBrut = time(0);
+    tm* date = localtime(&tempsBrut);
+
+    int rabais = rand() % 2; //"rabais" est 0 ou 1 ayant 50% de chance chacun
+    double sousTotal = 0;
+    double total = 0;
+    double tps = 0;
+    double tvq = 0;
+
+    //affichage de la facture
+    cout << "\n***************************" << endl;
+    cout << "       ** FACTURE **" << endl;
+    cout << "***************************\n" << endl;
+    if (panier.empty()) {
+        cout << "Le panier est vide." << endl;
+        return;
+    }
+
+    for (const Article& a : panier) {
+        cout << "-" << a.code << ": " << setw(18) << left << a.nom << a.prix << "$" << endl;
+        sousTotal = sousTotal + a.prix;
+    }
+
+    //affichage du rabais (50% du temps)
+    if (rabais == 1) {
+        cout << "\n      Rabais mystere: " << setprecision(2) << fixed << (sousTotal * 0.25) << "$" << endl;
+        sousTotal = sousTotal * 0.75;
+    }
+
+    cout << "---------------------------" << endl;
+    cout << "    Sous-total:    " << setprecision(2) << fixed << sousTotal << "$" << endl;
+    tps = sousTotal * 0.05;
+    tvq = sousTotal * 0.09975;
+    cout << "           TPS:    " << setprecision(2) << fixed << tps << "$" << endl;
+    cout << "           TVQ:    " << setprecision(2) << fixed << tvq << "$" << endl;
+    total = sousTotal + tps + tvq;
+    cout << "         Total:    " << setprecision(2) << fixed << total << "$" << endl;
+
+    cout << "***************************" << endl;
+    cout << "Vous avez ete servi par " << employe << endl;
+    cout << "Date: " << (1900 + date->tm_year) << "-"
+        << right << setw(2) << setfill('0') << (1 + date->tm_mon) << "-"
+        << setw(2) << setfill('0') << date->tm_mday << endl;
+    cout << "Heure: " << date->tm_hour << ":"
+        << setw(2) << setfill('0') << date->tm_min << ":"
+        << setw(2) << setfill('0') << date->tm_sec << endl;
+    cout << "***************************" << endl;
+
+    return;
+}
+
 // Fonction pour afficher le menu principal
 
-void menu(vector<Article>& panier, const vector<Article>& catalogue) {
+void menu(vector<Article>& panier, const vector<Article>& catalogue, string employe) {
     int choix;
     do {
         cout << "********************" << endl;
@@ -136,7 +198,7 @@ void menu(vector<Article>& panier, const vector<Article>& catalogue) {
         cout << "Votre choix: ";
         cin >> choix;
 
-		// Traiter le choix de l'utilisateur avec un switch
+        // Traiter le choix de l'utilisateur avec un switch
         switch (choix) {
         case 1:
             ajouterArticle(panier, catalogue);
@@ -148,7 +210,8 @@ void menu(vector<Article>& panier, const vector<Article>& catalogue) {
             afficherPanier(panier);
             break;
         case 0:
-            cout << "Passage a la facture..." << endl;
+            //cout << "Passage a la facture..." << endl;
+            facture(panier, employe);
             break;
         default:
             cout << "Choix invalide..." << endl;
@@ -157,11 +220,12 @@ void menu(vector<Article>& panier, const vector<Article>& catalogue) {
     } while (choix != 0);
 }
 
+
 int main() {
     string codeEmploye, nomEmploye;
 
 
-	// Boucle jusqu'a ce qu'un employe valide soit entre
+    // Boucle jusqu'a ce qu'un employe valide soit entre
     do {
         cout << "Veuillez vous identifier: ";
         cin >> codeEmploye;
@@ -172,12 +236,12 @@ int main() {
 
     cout << "Bonjour, " << nomEmploye << endl;
 
-	// Creer le catalogue et le panier avec des vecteurs
+    // Creer le catalogue et le panier avec des vecteurs
     vector<Article> catalogue = creerCatalogue();
     vector<Article> panier;
-    
-    menu(panier, catalogue);
 
-   
+    menu(panier, catalogue, nomEmploye);
+
+
     return 0;
 }
