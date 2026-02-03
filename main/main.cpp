@@ -9,7 +9,7 @@
 using namespace std;
 
 /// <summary>
-/// 
+/// initialisation de la matrice global
 /// </summary>
 struct Article {
 	string code; // Code unique de l'article
