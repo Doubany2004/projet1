@@ -53,7 +53,7 @@ void afficherCatalogue(const vector<Article>& catalogue) {
 }
 
 void ajouterArticle(vector<Article>& panier, const vector<Article>& catalogue) {
-    cout << "********************" << endl;
+    cout << "\n********************" << endl;
     cout << " AJOUT ARTICLE" << endl;
     cout << "********************" << endl;
 
@@ -77,7 +77,7 @@ void ajouterArticle(vector<Article>& panier, const vector<Article>& catalogue) {
 
 // afficher le contenu du panier
 void afficherPanier(const vector<Article>& panier) {
-    cout << "********************" << endl;
+    cout << "\n********************" << endl;
     cout << " AFFICHER PANIER" << endl;
     cout << "********************" << endl;
 
@@ -94,7 +94,7 @@ void afficherPanier(const vector<Article>& panier) {
 // supprimer un article du panier
 // 
 void supprimerArticle(vector<Article>& panier) {
-    cout << "********************" << endl;
+    cout << "\n********************" << endl;
     cout << " RETIRER ARTICLE" << endl;
     cout << "********************" << endl;
 
@@ -188,7 +188,7 @@ void facture(vector<Article>& panier, string employe) {
 void menu(vector<Article>& panier, const vector<Article>& catalogue, string employe) {
     int choix;
     do {
-        cout << "********************" << endl;
+        cout << "\n********************" << endl;
         cout << " MENU PRINCIPAL" << endl;
         cout << "********************" << endl;
         cout << "1. Ajouter un article" << endl;
