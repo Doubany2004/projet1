@@ -1,3 +1,3 @@
 ﻿  main.cpp
-C:\Users\66230\Downloads\projet1\main\main.cpp(134,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\66230\Downloads\projet1\main\main.cpp(173,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
   main.vcxproj -> C:\Users\66230\Downloads\projet1\main\x64\Debug\main.exe
